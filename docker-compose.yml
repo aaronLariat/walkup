@@ -1,0 +1,25 @@
+version: '2'
+services:
+  mongodb:
+    build: ./mongodb 
+    container_name: walkup-mongodb
+    expose: 
+     - "27017"
+    volumes:
+     - /data/mongoData:/data/db
+  pythoneve:
+    image: wwatson13/walkupeve:1.1
+    container_name: walkup-eve
+    environment:
+     - MONGODB=walkup-mongodb
+     - EVEPORT=5005
+    expose:
+     - "5005"
+    ports:
+     - "5000:5000"
+    volumes:
+     - /data/eveData:/data/eve
+    links:
+     - mongodb:walkup-mongodb
+    depends_on:
+     - mongodb
